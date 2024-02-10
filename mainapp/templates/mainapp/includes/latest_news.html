@@ -1,0 +1,18 @@
+{% load static %}
+<div class="row bg-lightgray">
+    <div class="container mb-4">
+            <h1 class="text-center mt-2 mb-4">Последние новости</h1>
+            <div class="card-deck">
+                {% for post in topnews %}
+                    <div class="card text-center bg-light">
+                        <img class="card-img-top" src="{{ post.image.url }}" alt="post-image">
+                        <div class="card-body">
+                          <small class="text-muted">{{ post.date_posted|date:'d F Y' }}</small>
+                          <h5 class="card-title">{{ post.title }}</h5>
+                        </div>
+                        <a href="{% url 'news-post' post.id %}" class="btn btn-primary">Читать далее</a>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+</div>

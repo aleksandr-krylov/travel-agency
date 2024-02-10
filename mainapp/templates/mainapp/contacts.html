@@ -1,0 +1,82 @@
+{% extends 'mainapp/base.html' %}
+{% load static %}
+{% block content %}
+<div class="row mt-4">
+    <div class="container">
+        <div class="row mt-3 mb-5">
+            <div class="col-lg-6 section bg-lightgray">
+                    <h3 class='border-bottom mb-4 text-center'>Контакты</h3>
+                    <div class="row">
+                        <div class="col-6 mb-4">
+                            <img src="{% static 'mainapp/content/contact/earphone.svg' %}" alt="earphone" width="32" height="32">
+                            +7 (8112) 62-23-30
+                        </div>
+                        <div class="col-6 mb-4">
+                            <img src="{% static 'mainapp/content/contact/fax-icon.svg' %}" alt="fax-icon" width="32" height="32">
+                            +7 (8112) 66-86-40
+                        </div>
+                        <div class="col-6 mb-4">
+                            <img src="{% static 'mainapp/content/contact/logo-whatsapp.svg' %}" alt="whatsapp-logo" width="32" height="32" title="whatsapp">
+                            +7(960) 225-66-88
+                        </div>
+                        <div class="col-6 mb-4">
+                            <img src="{% static 'mainapp/content/contact/logo-instagram.svg' %}" alt="instagram-logo" width="32" height="32" title="instagram">
+                            @globus.pskov
+                        </div>
+                        <div class="col-6 mb-4">
+                            <img src="{% static 'mainapp/content/contact/logo-vk.svg' %}" alt="vk-logo" width="32" height="32" title="vk">
+                            vk.com/globus-pskov
+                        </div>
+                        <div class="col-6 mb-4">
+                            <img src="{% static 'mainapp/content/contact/mail-logo.svg' %}" alt="envelope" width="32" height="32">
+                            contact@globus.com
+                        </div>
+                        <div class="col mb-4">
+                            <img src="{% static 'mainapp/content/contact/map-marker.svg' %}" alt="map-marker" width="32" height="32">
+                            г. Псков, ул. Советская д. 43
+                        </div>                          
+                    </div>
+                                
+                </div>
+                <div class="col-lg-4 offset-lg-2 section bg-lightgray">
+                        <h3 class='border-bottom mb-4 text-center'>Режим работы</h3>
+                        <div class="">
+                            <div class="row border-bottom">
+                                <div class="col-3 mt-3 mb-3">
+                                    Пн - Пт
+                                </div>
+                                <div class="col-5 offset-4 mt-3 mb-3">
+                                    10:00 — 19:00
+                                </div>
+                            </div>
+                            <div class="row border-bottom">
+                                <div class="col-3 mt-3 mb-3">
+                                    Сб
+                                </div>
+                                <div class="col-5 offset-4 mt-3 mb-3">
+                                    11:00 — 15:00
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-3 mt-3 mb-3">
+                                    Вс
+                                </div>
+                                <div class="col-5 offset-4 mt-3 mb-3">
+                                    Выходной
+                                </div>
+                            </div>
+                        </div>
+                </div>
+    </div>
+
+    </div>
+</div>   
+{% endblock content %}
+<!--
+    <div class="mapouter">
+                            <div class="gmap_canvas">
+                                <iframe width="400" height="300" id="gmap_canvas" src="https://maps.google.com/maps?q=%D0%BF%D1%81%D0%BA%D0%BE%D0%B2%20%D1%83%D0%BB.%20%D0%A1%D0%BE%D0%B2%D0%B5%D1%82%D1%81%D0%BA%D0%B0%D1%8F%2C%2043&t=&z=17&ie=UTF8&iwloc=&output=embed" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe>
+                                <a href="https://www.utilitysavingexpert.com">Utility Saving Expert</a>
+                            </div>
+                        </div
+-->

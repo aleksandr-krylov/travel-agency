@@ -1,0 +1,11 @@
+{% extends 'users/base_object_confirm_delete.html' %}
+{% block form_title %}
+    Удалить новость
+{% endblock %}
+{% block form_message %}
+    <h3>Вы уверены, что хотите удалить пост "{{ object.title }}" ?</h3>
+{% endblock %}
+{% block cancel_section %}
+    <a class='btn btn-secondary' href="{% url 'blog-edit' %}">Отмена</a>
+    
+{% endblock %}

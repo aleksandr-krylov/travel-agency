@@ -1,0 +1,40 @@
+{% load static %}
+<footer class="page-footer pt-3 primary-color">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4 col-md-6">
+                {% include 'mainapp/includes/logo.html' %}
+            </div>
+            <div class="col-lg-4 col-md-6 text-lg-left">
+                <p style="font-size: 14pt;"><strong>Контакты</strong></p>
+                <p style="margin-bottom: 10px;">
+                    <i class="fas fa-map-marker-alt"></i>
+                    г. Псков, ул. Советская д. 43
+                </p>
+                <p style="margin-bottom: 10px;">
+                    <i class="fas fa-phone-alt"></i>
+                    +7 (8112) 62-23-30
+                </p>
+                <p style="margin-bottom: 10px;">
+                    <i class="fas fa-envelope"></i>
+                    contact@travel-agency.com
+                </p>
+            </div>
+            <div class="col-lg-4 col-md-6">
+                    <p style="font-size: 14pt;"><strong>Мы в социальных сетях</strong></p>
+                    <div class="d-flex flex-row">
+                        <div class="p-2" style="padding-top: 0!important; padding-left: 0!important; padding-right: 10px;">
+                            <a class="menu-link" href="{% url 'contact-us' %}"><i class="fab fa-vk fa-2x"></i></a>
+                        </div>
+                        <div class="p-2" style="padding: 0 10px!important">
+                            <a class="menu-link" href="{% url 'contact-us' %}"><i class="fab fa-instagram fa-2x"></i></a>
+                        </div>
+                        <div class="p-2" style="padding: 0 10px!important">
+                            <a class="menu-link" href="{% url 'contact-us' %}"><i class="fab fa-whatsapp fa-2x"></i></a>
+                        </div>
+            
+                    </div>
+            </div>
+        </div>
+    </div>
+</footer>

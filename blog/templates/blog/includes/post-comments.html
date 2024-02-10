@@ -1,0 +1,23 @@
+{% load static %}
+<h4 class="border-bottom">
+    Комментарии
+    <span class="ml-2">{{ n_comments }}</span>
+</h4>
+
+{% for comment in comments %}
+<div>
+    <div class="row mb-2">
+            <div class="col-lg-2 col-sm-auto">
+                <img class="align-center" src="{% static 'mainapp/content/infobar/user-icon.svg' %}" alt="user-icon" width="20" height="20">
+                <span>{{ comment.author }}</span>
+            </div>
+            <div class="col-lg-4 col-sm-auto text-muted">
+                {{ comment.date_commented|date:'d F Y в H:m' }}
+            </div>
+    </div>
+    <p>
+        {{ comment.text }}
+    </p>
+</div>
+
+{% endfor %}

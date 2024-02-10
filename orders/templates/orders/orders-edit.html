@@ -1,0 +1,323 @@
+{% extends 'mainapp/base.html' %}
+{% load static %}
+{% block content %}
+{% if user.profile.status == 'M' %}
+<div class="row bg-primary">
+    <div class="container">
+        <h1 class="p-4 text-white">Заказы</h1>
+    </div>
+</div>
+<div class="row pt-3">
+    <div class="container">
+        <ul class="nav nav-pills bg-light text-center w-100" id="panel" role="tablist">
+            <li class="nav-item rounded border w-50">
+              <a class="nav-link active" id="orders-active-tab" data-toggle="pill" href="#orders-active" role="tab" aria-controls="pills-orders-active" aria-selected="true">
+                  Ожидающие обслуживания
+              </a>
+            </li>
+            <li class="nav-item rounded border w-50">
+              <a class="nav-link" id="orders-done-tab" data-toggle="pill" href="#orders-done" role="tab" aria-controls="pills-orders-done" aria-selected="false">
+                  Выполненные
+              </a>
+            </li>
+          </ul>
+          <div class="tab-content" id="pills-tabContent">
+            <div class="tab-pane fade show active" id="orders-active" role="tabpanel" aria-labelledby="orders-active-tab">
+                <div class="d-flex align-items-center bg-secondary border rounded mb-2">
+                    <div class="col-lg-2 col-md-2 p-3"><strong class="text-white">Код заказа</strong></div>
+                    <div class="col-lg-3 col-md-3 p-3"><strong class="text-white">Имя клиента</strong></div>
+                    <div class="col-lg-3 col-md-4 p-3"><strong class="text-white">Сумма</strong></div>
+                    <div class="col-lg-2 col-md-2 p-3"><strong class="text-white">Дата заказа</strong></div>
+                </div>
+                {% if p_orders %}
+                {% for order in p_orders %}
+                <div class="d-flex flex-column border rounded mb-4 bg-light">
+                    <div class="d-flex align-items-center">
+                        <div class="col-lg-2 col-md-2 p-3">{{ order.ref_code }}</div>
+                        <div class="col-lg-3 col-md-3 p-3">{{ order.user.username }}</div>
+                        <div class="col-lg-3 col-md-4 p-3">{{ order.total }} руб.</div>
+                        <div class="col-lg-2 col-md-2 p-3">{{ order.date_ordered|date:'d.m.Y' }}</div>
+                        <div class="col-lg-2 col-md-2 text-right">
+                            <a href="{{ order.get_order_done_url }}" class="info-link">Выполнить <i class="fas fa-check"></i></a>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-end p-3">
+                        <a class="info-link" data-toggle="collapse" href="#orderDetails {{ forloop.counter }}" role="button" aria-expanded="false" aria-controls="orderDetails {{ forloop.count }}">Подробнее</a>
+                    </div>
+                    <div class="collapse" id="orderDetails {{ forloop.counter }}">
+                        <div class="pb-4">
+                            <div class="d-flex pl-3">
+                                <div class="col-lg-6 col-md-6">
+                                    <div class="d-flex">
+                                        <div class="pt"><h3>Персональные данные клиента</h3></div>
+                                    </div>
+                                    <div class="row border rounded bg-white p-2">
+                                        <div class="col-12 pb-3">
+                                            <strong>Имя клиента</strong><br>
+                                            {{ order.user.username }}
+                                        </div>
+                                        <div class="col-12 pb-3">
+                                            <div class="row">
+                                                <div class="col-4">
+                                                    <strong>Фамилия</strong><br>
+                                                    {{ order.user.last_name }}
+                                                </div>
+                                                <div class="col-4">
+                                                    <strong>Имя</strong><br>
+                                                    {{ order.user.first_name }}
+                                                </div>
+                                                <div class="col-4">
+                                                    <strong>Дата рождения</strong><br>
+                                                    {{ order.user.profile.clientprofile.date_of_birth|date:'d.m.Y' }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-12 pb-3">
+                                            <div class="row">
+                                                <div class="col-6">
+                                                    <strong>Адрес электронной почты</strong><br>
+                                                    {{ order.user.email }}
+                                                </div>
+                                                <div class="col-4 offset-2">
+                                                    <strong>Номер телефона</strong><br>
+                                                    {{ order.user.profile.clientprofile.phone }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-12 pb-3">
+                                            <div class="row">
+                                                <div class="col-6">
+                                                    <strong>Серия и номер паспорта</strong><br>
+                                                    {{ order.user.profile.clientprofile.passport }}
+                                                </div>
+                                                <div class="col-4 offset-2">
+                                                    <strong>Дата выдачи</strong><br>
+                                                    {{ order.user.profile.clientprofile.starts_date }}
+                                                </div>
+                                                <div class="col-4 offset-8">
+                                                    <strong>Действителен до</strong><br>
+                                                    {{ order.user.profile.clientprofile.expires_date }}
+                                                </div>
+                                            </div>
+                                            
+                                        </div>
+                                        
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-md-6">
+                                    <div class="d-flex justify-content-between">
+                                        <div><h3>Заказ</h3></div>
+                                        <div>
+                                            <div class="rounded-circle bg-primary pr-2 pl-2 text-white">{{ order.cart.items_count }}</div>
+                                        </div>
+                                    </div>
+                                    <div class="bg-white">
+                                        {% for item in order.cart.get_items %}
+                                        <div class="border rounded p-2">
+                                            <div class="d-flex align-items-center">
+                                                {% if item.category == 'BUS TOUR' %}
+                                                <div class="col-lg-8 col-md-8">
+                                                    <h5>{{ item.bustour.title }}</h5>
+                                                </div>
+                                                <div class="col-lg-4 col-md-4 text-right">{{ item.bustour.price }} руб.</div>
+                                                {% else %}
+                                                <div class="col-lg-8 col-md-8"><h5>Круиз {{ item.cruise.title }}</h5></div>
+                                                <div class="col-lg-4 col-md-4 text-right">{{ item.cabin.price }} руб.</div>
+                                                {% endif %}
+                                            </div>
+                                            <div class="d-flex">
+                                                <div class="col-lg-8 col-md-8">
+                                                    <strong>Дата выезда: </strong>{{ item.date_booked.tour_date|date:'d.m.Y' }}
+                                                </div>
+                                            </div>
+                                            <div class="d-flex align-items-center">
+                                                {% if item.category == 'CRUISE' %}
+                                                <div class="col-lg-8 col-md-8"><strong>Класс каюты: </strong>{{ item.cabin.category }}</div>
+                                                {% endif %}
+                                            </div>
+                                            
+                                            {% if item.services.count %}
+                                                <div class="d-flex">
+                                                    <div class="col-lg-8 col-md-8">
+                                                        <strong>Дополнительные услуги:</strong>
+                                                    </div>
+                                                </div>
+                                                {% for service in item.services.all %}
+                                                <div class="d-flex">
+                                                    <div class="col-lg-8 pl-4">{{ forloop.counter }}. {{ service.name }}</div>
+                                                    <div class="col-lg-4 col-md-4 text-right">{{ service.price }} руб.</div>
+                                                </div>        
+                                               {% endfor %}
+                                            {% endif %}
+                                            <div class="d-flex mt-3 pt-2 border-top">
+                                                <div class="col-lg-8 col-md-8">
+                                                    <h5>Сумма</h5>
+                                                </div>
+                                                <div class="col-lg-4 col-md-4 text-right"><h5>{{ item.subtotal }} руб.</h5></div>
+                                            </div>
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                        
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+                {% else %}
+                <div class="d-flex">
+                    <h3>Заказов, ожидающих обслуживания, нет</h3>
+                </div>
+                {% endif %}
+            </div>
+            <div class="tab-pane fade" id="orders-done" role="tabpanel" aria-labelledby="orders-done-tab">
+                <div class="d-flex align-items-center bg-secondary border rounded mb-2">
+                    <div class="col-lg-2 col-md-2 p-3"><strong class="text-white">Код заказа</strong></div>
+                    <div class="col-lg-3 col-md-3 p-3"><strong class="text-white">Имя клиента</strong></div>
+                    <div class="col-lg-3 col-md-4 p-3"><strong class="text-white">Сумма</strong></div>
+                    <div class="col-lg-2 col-md-2 p-3"><strong class="text-white">Дата заказа</strong></div>
+                </div>
+                {% for order in d_orders %}
+                <div class="d-flex flex-column border rounded mb-4" style="background: rgba(40, 167, 69, 0.5);">
+                    <div class="d-flex align-items-center">
+                        <div class="col-lg-2 col-md-2 p-3">{{ order.ref_code }}</div>
+                        <div class="col-lg-3 col-md-3 p-3">{{ order.user.username }}</div>
+                        <div class="col-lg-3 col-md-4 p-3">{{ order.total }} руб.</div>
+                        <div class="col-lg-2 col-md-2 p-3">{{ order.date_ordered|date:'d.m.Y' }}</div>
+                        <div class="col-lg-1 offset-lg-1 col-md-1 offset-md-1">
+                            <i class="far fa-check-circle fa-2x"></i>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-end p-3">
+                        <a class="info-link" data-toggle="collapse" href="#orderDetails {{ forloop.counter }}" role="button" aria-expanded="false" aria-controls="orderDetails {{ forloop.count }}">Подробнее</a>
+                    </div>
+                    <div class="collapse" id="orderDetails {{ forloop.counter }}">
+                        <div class="pb-4">
+                            <div class="d-flex pl-3">
+                                <div class="col-lg-6 col-md-6">
+                                    <div class="d-flex">
+                                        <div class="pt"><h3>Персональные данные клиента</h3></div>
+                                    </div>
+                                    <div class="row border rounded bg-white p-2">
+                                        <div class="col-12 pb-3">
+                                            <strong>Имя клиента</strong><br>
+                                            {{ order.user.username }}
+                                        </div>
+                                        <div class="col-12 pb-3">
+                                            <div class="row">
+                                                <div class="col-4">
+                                                    <strong>Фамилия</strong><br>
+                                                    {{ order.user.last_name }}
+                                                </div>
+                                                <div class="col-4">
+                                                    <strong>Имя</strong><br>
+                                                    {{ order.user.first_name }}
+                                                </div>
+                                                <div class="col-4">
+                                                    <strong>Дата рождения</strong><br>
+                                                    {{ order.user.profile.clientprofile.date_of_birth|date:'d.m.Y' }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-12 pb-3">
+                                            <div class="row">
+                                                <div class="col-6">
+                                                    <strong>Адрес электронной почты</strong><br>
+                                                    {{ order.user.email }}
+                                                </div>
+                                                <div class="col-4 offset-2">
+                                                    <strong>Номер телефона</strong><br>
+                                                    {{ order.user.profile.clientprofile.phone }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-12 pb-3">
+                                            <div class="row">
+                                                <div class="col-6">
+                                                    <strong>Серия и номер паспорта</strong><br>
+                                                    {{ order.user.profile.clientprofile.passport }}
+                                                </div>
+                                                <div class="col-4 offset-2">
+                                                    <strong>Дата выдачи</strong><br>
+                                                    {{ order.user.profile.clientprofile.starts_date }}
+                                                </div>
+                                                <div class="col-4 offset-8">
+                                                    <strong>Действителен до</strong><br>
+                                                    {{ order.user.profile.clientprofile.expires_date }}
+                                                </div>
+                                            </div>
+                                            
+                                        </div>
+                                        
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-md-6">
+                                    <div class="d-flex justify-content-between">
+                                        <div><h3>Заказ</h3></div>
+                                        <div>
+                                            <div class="rounded-circle bg-primary pr-2 pl-2 text-white">{{ order.cart.items_count }}</div>
+                                        </div>
+                                    </div>
+                                    <div class="bg-white">
+                                        {% for item in order.cart.get_items %}
+                                        <div class="border rounded p-2">
+                                            <div class="d-flex align-items-center">
+                                                {% if item.category == 'BUS TOUR' %}
+                                                <div class="col-lg-8 col-md-8">
+                                                    <h5>{{ item.bustour.title }}</h5>
+                                                </div>
+                                                <div class="col-lg-4 col-md-4 text-right">{{ item.bustour.price }} руб.</div>
+                                                {% else %}
+                                                <div class="col-lg-8 col-md-8"><h5>Круиз {{ item.cruise.title }}</h5></div>
+                                                <div class="col-lg-4 col-md-4 text-right">{{ item.cabin.price }} руб.</div>
+                                                {% endif %}
+                                            </div>
+                                            <div class="d-flex">
+                                                <div class="col-lg-8 col-md-8">
+                                                    <strong>Дата выезда: </strong>{{ item.date_booked.tour_date|date:'d.m.Y' }}
+                                                </div>
+                                            </div>
+                                            <div class="d-flex align-items-center">
+                                                {% if item.category == 'CRUISE' %}
+                                                <div class="col-lg-8 col-md-8"><strong>Класс каюты: </strong>{{ item.cabin.category }}</div>
+                                                {% endif %}
+                                            </div>
+                                            
+                                            {% if item.services.count %}
+                                                <div class="d-flex">
+                                                    <div class="col-lg-8 col-md-8">
+                                                        <strong>Дополнительные услуги:</strong>
+                                                    </div>
+                                                </div>
+                                                {% for service in item.services.all %}
+                                                <div class="d-flex">
+                                                    <div class="col-lg-8 pl-4">{{ forloop.counter }}. {{ service.name }}</div>
+                                                    <div class="col-lg-4 col-md-4 text-right">{{ service.price }} руб.</div>
+                                                </div>        
+                                                {% endfor %}
+                                            {% endif %}
+                                            <div class="d-flex mt-3 pt-2 border-top">
+                                                <div class="col-lg-8 col-md-8">
+                                                    <h5>Сумма</h5>
+                                                </div>
+                                                <div class="col-lg-4 col-md-4 text-right"><h5>{{ item.subtotal }} руб.</h5></div>
+                                            </div>
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                        
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+          </div>
+        </div>
+    </div>
+</div>
+{% else %}
+{% endif %}
+{% endblock %}

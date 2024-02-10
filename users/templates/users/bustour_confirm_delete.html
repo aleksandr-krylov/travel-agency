@@ -1,0 +1,10 @@
+{% extends 'users/base_object_confirm_delete.html' %}
+{% block form_title %}
+    Удалить автобусный тур
+{% endblock %}
+{% block form_message %}
+    <h3>Вы уверены, что хотите удалить автобусный тур "{{ object.title }}" ?</h3>
+{% endblock %}
+{% block cancel_section %}
+    <a class='btn btn-secondary' href="{% url 'bustours-edit' %}">Отмена</a>
+{% endblock %}

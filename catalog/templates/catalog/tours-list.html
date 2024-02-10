@@ -1,0 +1,53 @@
+{% extends 'mainapp/base.html' %}
+{% load static %}
+{% block content %}
+<div class="row mt-4">
+    <div class="container mb-4">
+        <div class="row">
+            <div class="col-lg-8 col-md-9">
+                <div class='mb-4'>
+                    <form action="#" method="POST" class="row">
+                        <div class="col-lg-10 col-md-8">
+                            <input class="form-control form-control-lg" type="text" placeholder="Введите название тура">
+                        </div>
+                        <div class="col-lg-2 col-md-4">
+                            <div class="float-right">
+                                <button type="submit" class="btn btn-lg btn-primary">Поиск</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                
+                <div class="row">
+                    {% for tour in tours %}
+                    <div class="col-lg-6 col-md-6 col-sm-auto" style="padding-bottom: 20px; transition: 0.5s">
+                        <div class="card hover-effect h-100">
+                            <img class="card-img-top" src="{{ tour.image.url }}" alt="Card image cap">
+                            <div class="card-body">
+                                <div class="h-50">
+                                    {% if tour.category == 'BUS TOUR' %}
+                                        <h4 class="card-title"><a class="info-link" href="{% url 'bustour-page' tour.id %}">{{ tour.title }}</h4></a>
+                                    {% else %}
+                                        <h4 class="card-title"><a class="info-link" href="{% url 'cruise-page' tour.id %}">{{ tour.title }}</h4></a>
+                                    {% endif %}
+                                </div>
+                                <p class="float-left text-muted">{{ tour.get_category_display }}</p>
+                                <h5 class="card-text text-right">{{ tour.price }} руб.</h5>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <form action="" method="GET">
+                   <input type="range" min="1" max="7" value="1" id="durationRange" name="duration" class="slider">
+
+                    <button type="submit" class="btn btn-primary">Применить</button>
+                    
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content%}

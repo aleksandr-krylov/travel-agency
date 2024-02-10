@@ -1,0 +1,12 @@
+<div class="section bg-lightgray">
+    <h4 class="border-bottom mb-3">Последние новости</h4>
+        <ul class="list-group">
+            {% for post in top3news %}
+            <li class="list-group-item">
+                <a class="info-link" href="{% url 'news-post' post.id %}">{{ post.title }}</a><br>
+                <small class="text-muted">{{ post.date_posted|date:'d F Y' }}</small>
+            </li>
+            {% endfor %}
+        </ul>
+    </p>
+    </div>

@@ -1,0 +1,34 @@
+{% extends 'mainapp/base.html' %}
+{% load static %}
+{% block content %}
+{% if user.is_superuser %}
+    <div class="row pt-4 pb-4">
+        <div class="container">
+            <div class="d-flex flex-lg-row flex-md-row flex-sm-column ">
+                <div class="m-4" style="width: 30%;">
+                    <div class="card hover-effect text-center primary-color">
+                        <div class="text-center pt-2">
+                            <img class="w-75" src="{% static 'mainapp/content/bus-tour.png' %}" alt="Bus tour icon">
+                        </div>
+                        <div class="card-body">
+                        <a href="{% url 'bustours-edit' %}" class="menu-link"><h3 class="card-title">Автобусные туры</h3></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="m-4" style="width: 30%;">
+                    <div class="card hover-effect text-center primary-color">
+                        <div class="text-center pt-2">
+                            <img class="w-75" src="{% static 'mainapp/content/cruise-icon.png' %}" alt="Cruise icon">
+                        </div>
+                        <div class="card-body">
+                        <a href="{% url 'cruises-edit' %}" class="menu-link"><h3 class="card-title">Круизы</h3></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% else %}
+{% include 'mainapp/includes/permission_denied.html' %}
+{% endif %}
+{% endblock content %}

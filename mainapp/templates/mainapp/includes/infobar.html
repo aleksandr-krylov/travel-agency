@@ -1,0 +1,54 @@
+<div class="container infobar">
+    <div class="row">
+        <div class="col-lg-6 col-md-6">
+            <div class="d-flex flex-row">
+                <div class="p-2">
+                    <i class="fas fa-phone-alt"></i>
+                    +7 (8112) 62-23-30
+                </div>
+                <div class="p-2">
+                    <i class="fas fa-envelope"></i>
+                    contact@bustravel.ru
+                </div>
+            </div>  
+        </div>
+        <div class="col-2">
+            <div class="d-flex flex-lg-row flex-md-row flex-sm-column">
+                <div class="p-2">
+                    <a class="info-link" href="{% url 'contact-us' %}"><i class="fab fa-vk"></i></a>
+                </div>
+                <div class="p-2">
+                    <a class="info-link" href="{% url 'contact-us' %}"><i class="fab fa-instagram"></i></a>
+                </div>
+                <div class="p-2">
+                    <a class="info-link" href="{% url 'contact-us' %}"><i class="fab fa-whatsapp"></i></a>
+                </div>
+
+            </div>  
+        </div>
+        <div class="col-4">
+            <div class="d-flex flex-row-reverse">
+                {% if user.is_authenticated %}
+                <div class="p-2">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <a class="info-link" href="{% url 'logout' %}">Выйти</a>
+                </div>
+                <div class="p-2">
+                    <i class="far fa-user-circle"></i>
+                    <a class="info-link" href="{% url 'profile' %}" >{{ user.username }}</span>
+                </div>
+                {% else%}
+                <div class="p-2">
+                    <i class="fas fa-sign-in-alt"></i>
+                    <a class="info-link" href="{% url 'login' %}">Вход</a>
+                </div>
+                <div class="p-2">
+                    <i class="fas fa-user-alt"></i>
+                    <a class="info-link" href="{% url 'register' %}">Регистрация</a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        
+    </div>
+</div>

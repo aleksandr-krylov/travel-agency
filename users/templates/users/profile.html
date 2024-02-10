@@ -1,0 +1,79 @@
+{% extends 'mainapp/base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block content %}
+<div class="row">
+    {% if user.is_superuser %}
+    <div class="container" style="margin-bottom: 100px">
+        <div class="card-deck pt-4 pb-4 mt-2">
+            <div class="card hover-effect text-center primary-color">
+                <div class="text-center pt-2">
+                    <img class="w-75" src="{% static 'mainapp/content/news-icon.png' %}" alt="Card image cap">
+                </div>
+              <div class="card-body">
+                <a href="{% url 'news-edit' %}" class="menu-link"><h3 class="card-title">Новости</h3></a>
+              </div>
+            </div>
+            <div class="card hover-effect text-center primary-color">
+                <div class="text-center pt-2">
+                    <img class="w-75" src="{% static 'mainapp/content/blog-icon.jpg' %}" alt="Card image cap">
+                </div>
+              <div class="card-body">
+                <a href="{% url 'blog-edit' %}" class="menu-link"><h3 class="card-title">Блог</h3></a>
+              </div>
+            </div>
+            <div class="card hover-effect text-center primary-color">
+                <div class="text-center pt-2">
+                    <img class="w-75" src="{% static 'mainapp/content/tour-icon.png' %}" alt="Card image cap">
+                </div>
+              <div class="card-body">
+                <a href="{% url 'catalog-list' %}" class="menu-link"><h3 class="card-title">Туры</h3></a>
+              </div>
+            </div>
+            <div class="card hover-effect text-center primary-color">
+                <div class="text-center pt-2">
+                    <img class="w-75" src="{% static 'mainapp/content/manager-icon.png' %}" alt="Card image cap">
+                </div>
+              <div class="card-body">
+                <a href="{% url 'managers-edit' %}" class="menu-link"><h3 class="card-title">Менеджеры</h3></a>
+              </div>
+            </div>
+          </div>
+    </div>
+    {% else %}
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 col-md-8 section bg-light mt-3 mb-5">
+          <div class="d-flex flex-lg-row flex-md-row flex-sm-column">
+            <div class="col-lg-4 col-md-4">
+              <img src="{% static 'mainapp/content/user-edit.svg' %}" alt="">
+            </div>
+            <div class="col-lg-8">
+              <h2>{{ user.username }}</h2>
+              <p>
+                <strong>Статус: </strong>
+                <span class="text-muted">{{ user.profile.get_status_display }}</span>
+              </p>
+            </div>
+          </div>
+          <div class="mt-4">
+            <form method="POST" enctype="multipart">
+              {% csrf_token %}
+              <fieldset class='form-group'>
+                  <legend class='border-bottom mb-4'>Персональные данные</legend>
+                  {{ u_form|crispy}}
+                  {% if user.profile.status == 'C' %}
+                    {{ c_form|crispy }}
+                  {% endif %}
+              </fieldset>
+              <div class='form-group'>
+                <button class='btn btn-primary btn-lg' type="submit">Изменить</button>
+            </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock content %}

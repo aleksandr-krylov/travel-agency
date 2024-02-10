@@ -1,0 +1,27 @@
+{% extends 'mainapp/base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div class="row">
+    <di class="container pt-4 pb-4">
+        <div class="row">
+            {% if user.is_superuser %}
+            <div class="col-lg-8 offset-lg-2 section bg-light">
+                {{ form.media }}
+                <form method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <fieldset class='form-group'>
+                        <legend class='border-bottom mb-4'>{{ title }}</legend>
+                        {{ form|crispy }}
+                    </fieldset>
+                    <div class='form-group'>
+                        <button class='btn btn-outline-primary' type="submit">Добавить</button>
+                    </div>
+                </form>
+            </div>
+        {% else %}
+        {% include 'mainapp/includes/permission_denied.html' %}
+        {% endif %}
+        </div>
+    </di>
+</div>
+{% endblock content %}

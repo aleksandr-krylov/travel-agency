@@ -1,0 +1,27 @@
+{% extends 'mainapp/base.html' %}
+{% load static %}
+{% block content %}
+{% if user.is_superuser %}
+    <div class="row">
+        <div class="container" style="margin-top: 5%; margin-bottom: 5%;">
+            <div class="row">
+                <div class="col-lg-6 offset-lg-3 col-md-6 offset-md-3 col-sm-8 offset-sm-2 section bg-light">
+                    <form method="POST" action="{% url 'manager-delete' object.id %}">
+                        {% csrf_token %}
+                        <fieldset class='form-group'>
+                            <legend class='border-bottom mb-4'>Удалить менеджера</legend>
+                            <p>Вы уверены, что хотите удалить менеджера <strong>{{ object.username }} </strong>?</p>
+                        </fieldset>
+                        <div class='form-group float-right'>
+                            <button class='btn btn-danger' type="submit">Удалить</button>
+                            <a class='btn btn-secondary' href="{% url 'managers-edit' %}">Отмена</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% else %}
+    <h1>Ошибка доступа</h1>
+{% endif %}
+{% endblock content %}

@@ -1,0 +1,208 @@
+@import url('https://fonts.googleapis.com/css?family=Abril+Fatface&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Roboto+Slab&display=swap');
+
+body {
+    background: #ffffff;
+    
+}
+
+.primary-color {
+    background: #FFCE00;
+}
+
+.secondary-color {
+    background: #007bff;
+}
+
+.bg-lightgray {
+    background: rgb(238, 234, 234);
+}
+
+.bg-lightgreen {
+    background: rgba(40, 167, 69, 0.5)!important;
+}
+
+.infobar {
+    color: black;
+    font-weight: 600;
+    
+}
+
+.content-section {
+    text-align: center;
+    margin-top: 20px;
+    padding: 30px 20px;
+    border: 1px solid #dddddd;
+    border-radius: 5px;
+}
+
+.section {
+    padding: 20px 20px;
+    border: 1px solid #dddddd;
+    border-radius: 5px;
+}
+
+.content-section img {
+    width: 128px;
+    height: 128px;
+    margin-bottom: 20px;
+}
+
+.size-60 {
+    width: 60%;
+}
+
+.height-60 {
+    height: 60%!important;
+}
+
+.mt-20 {
+    margin-top: 20px;
+}
+
+.mapouter {
+    position:relative;
+    text-align:right;
+    margin: auto 20px;
+}
+
+.gmap_canvas {
+    overflow:hidden;
+    background:none!important;
+    height:300px;
+    width:400px;
+}
+
+.card-img-top {
+    width: 100%;
+    height: 18vw;
+    object-fit: cover;
+}
+
+.list-group-item a {
+    text-decoration: none;
+    color: black;
+}
+
+#btnScrollToTop {
+    position: fixed;
+    right: 10px;
+    bottom: 10px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    color: #ffffff;
+    border: none;
+    outline: none;
+    cursor: pointer;
+}
+
+.logo-text {
+    font-family: 'Abril Fatface', cursive;
+    color: black;
+    font-size: 20pt;
+    margin-bottom: -8px;
+}
+
+.logo div {
+    padding: 0 2px!important;
+}
+
+.logo img {
+    color: black;
+}
+
+.page-footer {
+    color: black;
+}
+
+.info-link {
+    color: black;
+}
+
+.info-link:hover {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.menu-link {
+    color: black;
+}
+
+.menu-link:hover {
+    text-decoration: none;
+    color: white;
+}
+
+.hover-effect:hover {
+    -webkit-box-shadow: -1px 9px 40px -12px rgba(0, 0, 0, 0.75);
+    -moz-box-shadow: -1px 9px 40px -12px rgba(0, 0, 0, 0.75);
+    box-shadow: -1px 9px 40px -12px rgba(0, 0, 0, 0.75);
+    transform: scale(1.05);
+}
+
+#sign-in {
+    background-image: url(content/venice.jpg);
+    background-size: cover; /* Resize the background image to cover the entire container */
+}
+
+#bg-visa {
+    background-image: url(content/visa-thumb-nail.png);
+    background-size: cover;
+}
+
+.service-title {
+    font-family: 'Roboto Slab', serif;
+    font-weight: 600;
+}
+
+#panel {
+    color: #ffffff;
+}
+
+#sign-up {
+    background-image: url(content/greece.jpg);
+    background-size: cover;
+}
+
+.radio-button label {
+    cursor: pointer;
+}
+
+.radio-button label input[type="radio"] {
+    display: none;
+}
+
+.radio-button label span:hover {
+    background-color: transparent;
+    color: #007bff;
+   
+}
+
+.radio-button label input[type="radio"]:checked ~ span {
+    background: #007bff;
+    color: white;
+}
+
+.form-input-container { 
+    position: relative;
+} 
+  
+
+.form-input-container > i{ 
+    position: absolute;
+    top: 30%;
+    right: 5%;
+}
+
+.form-input-container > div.icon-group {
+    position: absolute;
+    top: 10%;
+    right: 2%;
+}
+
+.slider {
+    width: 100%;
+    outline: none;
+    
+}

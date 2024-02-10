@@ -1,0 +1,84 @@
+{% load static %}
+{% load cart_template_tags %}
+<header class="site-header">
+    <nav class="navbar navbar-expand-md navbar-dark primary-color sticky-top" id="bootnavbar">
+      <div class="container">
+        <a class="navbar-brand mr-5" href="{% url 'home' %}">
+          {% include 'mainapp/includes/logo.html' %}
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarToggle">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'home' %}">Главная</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'about' %}">О нас</a>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Каталог туров
+              </a>
+              <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" href="{% url 'bustours-ru' %}">Автобусные туры по России</a></li>
+                  <li class="nav-link dropdown">
+                    <a class="dropdown-item dropdown-toggle" href="#" data-toggle="dropdown">Автобусные туры в Прибалтику</a>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a href="{% url 'bustours-est' %}" class="dropdown-item">Эстония</a>
+                        </li>
+                        <li>
+                            <a href="{% url 'bustours-lv' %}" class="dropdown-item">Латвия</a>
+                        </li>
+                        <li>
+                            <a href="{% url 'bustours-lt' %}" class="dropdown-item">Литва</a>
+                    </ul>
+                  </li>
+                  <li><a class="dropdown-item" href="{% url 'cruises' %}">Круизы</a></li>
+              </ul>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'services' %}">Услуги</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'news' %}">Новости</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'blog' %}">Блог</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'contact-us' %}">Контакты</a>
+            </li>
+          </ul>
+          <div class="navbar-nav">
+              {% if user.profile.status == 'C' %}
+                <li class="nav-item">
+                  <a class="nav-link" href="{% url 'cart' %}">Корзина</a>
+                </li>
+                <i class="fas fa-shopping-cart fa-2x"></i>
+                <div class="d-flex align-items-start">
+                  <span class="badge badge-light">{{ request|cart_items_count }}</span>
+                </div>
+              {% endif %}
+              {% if user.is_superuser %}
+                <a class="nav-item nav-link btn btn-outline-primary" href="/admin">Административный отдел</a>
+              {% endif %}
+              {% if user.profile.status == 'M' %}
+                <a class="nav-item nav-link btn btn-outline-primary" href="/orders-edit">Заказы</a>
+              {% endif %}
+          </div>
+        </div>
+      </div>
+    </nav>
+</header>
+
+{% block scripts %}
+  <script src="{% static 'mainapp/navbar-script.js' %}"></script>
+  <script>
+    $(function() {
+        $('#bootnavbar').bootnavbar();
+    })
+  </script>
+{% endblock %}

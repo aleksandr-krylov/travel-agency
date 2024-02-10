@@ -1,0 +1,71 @@
+{% extends 'mainapp/base.html' %}
+{% load static %}
+{% block content %}
+{% if user.is_superuser %}
+    <div class="row bg-primary">
+        <div class="container">
+            <h1 class="p-4 text-white">Блог</h1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="container">
+            <div class="d-flex justify-content-between pt-4 pb-4">
+                <div>
+                    <a href="{% url 'profile' %}" class="btn btn-info"><i class="fas fa-arrow-left pr-2"></i>Назад</a>
+                </div>
+                <div>
+                    <a href="{% url 'blog-post-create' %}" class="btn btn-info">Добавить пост<i class="fas fa-plus ml-2"></i></a>
+                </div>
+            </div>
+            {% for object in object_list %}
+                <div class="d-flex flex-lg-row flex-md-row flex-sm-column border rounded mb-4 p-2 bg-lightgray">
+                    <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                        <img class="rounded w-100" src="{{ object.image.url }}" alt="news-image">
+                    </div>
+                    <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
+                        <div class="d-flex flex-column h-50">
+                            <a class="info-link" href="{{ object.get_absolute_url }}"><h3>{{ object.title }}</h3></a>
+                            <div class="d-flex flex-lg-row flex-md-row flex-sm-column flex-xs-column">
+                                <div class="mr-4">
+                                    <i class="far fa-clock"></i>
+                                    <span>{{ object.date_posted|date:'d F Y' }}</span>
+                                </div>
+                                <div class="mr-4">
+                                    <i class="far fa-user-circle"></i>
+                                    <span>admin</span>
+                                </div>
+                                <div class="mr-4">
+                                    <i class="far fa-comments"></i>
+                                    <span>{{ object.get_number_of_comments }}</span>
+                                </div>
+                            </div>
+                            <div class="pt-2 text-justify">{{ object.description|safe }}</div>
+                        </div>
+                        <div class="d-flex justify-content-end align-items-end h-50">
+                            <div>
+                                <a href="{% url 'blog-post-delete' object.id %}" class="btn btn-outline-danger">Удалить</a>
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+            {% if is_paginated %}
+                <nav aria-label="page navigation">
+                    <ul class="pagination pagination-template d-flex justify-content-center">
+                    {% if page_obj.has_previous %}                
+                        <li class="page-item"><a href="?page={{ page_obj.previous_page_number }}" class="page-link"> <i class="fa fa-angle-left"></i></a></li>
+                    {% endif %}
+                    <li class="page-item"><a href="?page={{ page_obj.number }}" class="page-link active">{{ page_obj.number }}</a></li>
+                    {% if page_obj.has_next %}
+                        <li class="page-item"><a href="?page={{ page_obj.next_page_number }}" class="page-link"> <i class="fa fa-angle-right"></i></a></li>
+                    {% endif %}
+                    </ul>
+                </nav>
+            {% endif %}
+        </div>
+    </div>
+{% else %}
+{% include 'mainapp/includes/permission_denied.html' %}
+{% endif %}
+{% endblock content %}

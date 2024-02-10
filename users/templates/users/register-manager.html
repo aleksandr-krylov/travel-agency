@@ -1,0 +1,25 @@
+{% extends 'mainapp/base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+{% if user.is_superuser %}
+<div class="row" id="sign-up">
+    <div class="container pt-4 pb-4">
+        <div class="col-lg-6 offset-lg-3 section bg-light">
+            <form method="POST">
+                {% csrf_token %}
+                <fieldset class='form-group'>
+                    <legend class='border-bottom mb-4'>Регистрация менеджера</legend>
+                    {{ form|crispy }}
+                </fieldset>
+                <div class='form-group'>
+                    <button class='btn btn-outline-primary w-100' type="submit">Зарегистрировать</button>
+                </div>
+            </form>
+        </div>
+        
+    </div>
+</div>
+{% else %}
+{% include 'mainapp/includes/permission_denied.html' %}
+{% endif %}
+{% endblock content %}

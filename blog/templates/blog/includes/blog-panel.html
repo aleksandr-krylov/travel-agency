@@ -1,0 +1,23 @@
+<div class="section bg-lightgray">
+    <h4 class="border-bottom mb-3">Последние статьи</h4>
+        <ul class="list-group">
+            {% for post in top3posts %}
+            <li class="list-group-item">
+                <a class="info-link" href="{% url 'blog-post' post.id %}">{{ post.title }}</a><br>
+                <small class="text-muted">{{ post.date_posted|date:'d F Y' }}</small>
+            </li>
+            {% endfor %}
+        </ul>
+    </p>
+</div>
+<div class="section mt-4 bg-lightgray">
+    <h4 class="border-bottom mb-3">Последние комментарии</h4>
+        <ul class="list-group">
+            {% for comment in top5comments %}
+            <li class="list-group-item">
+                <span class="text-muted">{{ comment.author}} - </span>
+                <a class="info-link" href="{% url 'blog-post' comment.post.id %}">{{ comment.post.title}}</a>
+            </li>
+            {% endfor %}
+        </ul>
+</div>

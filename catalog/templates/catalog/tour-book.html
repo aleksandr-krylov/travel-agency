@@ -1,0 +1,160 @@
+{% extends 'mainapp/base.html' %}
+{% load static %}
+{% block content %}
+<div class="row pt-4">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-9 col-md-9 col-sm-12">
+                <div class="row">
+                    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                        <img class="rounded w-100" src="{{ tour.image.url }}" alt="tour-image">
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                        <h2>{{ tour.title }}</h2>
+                        <strong>Категория:</strong>
+                        <span class="text-muted">{{ tour.get_category_display }}</span><br>
+                        {% if tour.category == 'BUS TOUR' %}
+                            <strong>Страна:</strong>
+                            <span class="text-muted">{{ tour.get_country_display }}</span>
+                        {% elif tour.category == 'CRUISE' %}
+                            <p>На пароме <strong>{{ tour.ferry.name }}</strong> (<a href="{{ tour.ferry.link }}" target="_blank">подробнее</a>)</p>
+                        {% endif %}
+                        <div class="pt-3 pb-2">
+                            {% if tour.category == 'BUS TOUR' %}
+                                <form action="{% url 'bustour-add-to-cart' tour.id %}" method="POST">
+                            {% else %}
+                                <form action="{% url 'cruise-add-to-cart' tour.id %}" method="POST">
+                            {% endif %}
+                                {% csrf_token %}
+                                <div class="form-group">
+                                    <label><strong>Выберите дату:</strong></label>
+                                    <div class="d-flex">
+                                        {% for entry in tour.get_tour_dates %}
+                                        {% if not entry.is_passed %}
+                                        <div class="pr-4 radio-button">
+                                            <label>
+                                                <input class="" type="radio" name="date"
+                                                    value="{{ entry.id }}">
+                                                <span
+                                                    class="btn btn-outline-primary">{{ entry.tour_date|date:'d.m' }}
+                                                </span>
+                                            </label>
+                                        </div>
+                                        {% endif %}
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                                {% if tour.category == 'CRUISE' %}
+                                <div class="form-group">
+                                    <label><strong>Выберите класс каюты:</strong></label>
+                                    <table class="table mb-5">
+                                        <tbody>
+                                            <tr>
+                                                {% for cabin in tour.ferry.cabins.all %}
+                                                <td>{{ cabin.category }}</td>
+                                                {% endfor %}
+                                            </tr>
+                                            <tr>
+                                                {% for cabin in tour.ferry.cabins.all %}
+                                                <td>{{ cabin.price }} руб.</td>
+                                                {% endfor %}
+                                            </tr>
+                                            <tr>
+                                                {% for cabin in tour.ferry.cabins.all %}
+                                                <td>
+                                                    <div class="form-check text-center">
+                                                        {% if forloop.counter == forloop.first %}
+                                                        <input class="form-check-input cabinOption" type="radio" name="cabin" value="{{ cabin.id }}-{{ cabin.price }}" checked>
+                                                        {% else %}
+                                                        <input class="form-check-input cabinOption" type="radio" name="cabin" value="{{ cabin.id }}-{{ cabin.price }}">
+                                                        {% endif %}
+                                                    </div>
+                                                </td>
+                                                {% endfor %}
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                {% endif %}
+                                {% if tour.get_services %}
+                                    <div class="form-group">
+                                        <label><strong>Выберите дополнительные услуги:</strong></label>
+                                        {% for entry in tour.get_services %}
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="service {{ forloop.counter }}" value="{{ entry.id }}-{{ entry.price }}">
+                                            <label class="form-check-label">
+                                                {{ entry.name }}
+                                                {% if entry.notes %}
+                                                    <p class="text-justify text-muted">{{ entry.notes }}</p>
+                                                {% endif %}
+                                                <p>
+                                                    <strong>Цена:</strong>
+                                                    <span class="text-muted">{{ entry.price }} руб.</span>
+                                                </p>
+                                                
+                                            </label>
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+                                    <h4 class="mb-3">Итоговая стоимость: <span id="total">{{ tour.price }}</span> руб.</h4>
+                                {% endif %}
+                                <button class='btn btn-primary' type="submit">Добавить в корзину</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block scripts %}
+<script>
+    var ititialPrice = null;
+    var anyServices = function() {
+        var bool = false
+        $('input[type="checkbox"]').each(function() {
+            if ($(this).prop("checked") == true) {
+                bool = true;
+                return (bool !== true);
+            }
+        });
+        return bool
+    }
+
+    $('input[type="checkbox"]').click(function () {
+        // Pull up the total sum at the moment of clicking on checkbox
+        var totalSum = $('#total').text();
+        totalSum = parseFloat(totalSum);
+        // Extract value of checkbox we clicked on
+        var inputName = $(this).val().split("-");
+        var inputValue = parseFloat(inputName[1]);
+        if ($(this).prop("checked") == true) {
+            totalSum += inputValue
+        }
+        else {
+            totalSum -= inputValue
+        }
+        $('#total').text(totalSum);
+    });
+
+    $('input[type="radio"].cabinOption').click(function() {
+        var totalSum = $('#total').text();
+        var inputName = $(this).val().split("-");
+        var inputValue = parseFloat(inputName[1]);
+        
+        if ($(this).prop("checked") == true && anyServices()) {
+            totalSum -= initialPrice;
+            totalSum += inputValue;
+            initialPrice = inputValue;
+        }
+        else if ($(this).prop("checked") == true) {
+            totalSum = inputValue;
+            initialPrice = inputValue;
+        }
+        $('#total').text(totalSum);
+    });
+
+    
+</script>
+{% endblock %}

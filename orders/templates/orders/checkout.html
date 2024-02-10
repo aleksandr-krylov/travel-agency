@@ -1,0 +1,167 @@
+{% extends 'mainapp/base.html' %}
+{% block content %}
+{% load crispy_forms_tags %}
+{% if user.profile.status == 'C' %}
+<div class="row pt-4 pb-4">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 col-md-6 col-sm-8 card card-body bg-light">
+                <form method="POST" enctype="multipart">
+                    {% csrf_token %}
+                    <fieldset class='form-group'>
+                        <legend class='border-bottom mb-4'>Оформление заказа</legend>
+                        <div class="form-group">
+                            {{ u_form.username.label }}
+                            {{ u_form.username }}
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-6">
+                                {{ u_form.last_name.label }}
+                                {{ u_form.last_name }}
+                            </div>
+                            <div class="form-group col-6">
+                                {{ u_form.first_name.label }}
+                                {{ u_form.first_name }}
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            {{ c_form.date_of_birth.label }}
+                            <div class="form-inline">
+                                {{ c_form.date_of_birth }}
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-6">
+                                {{ u_form.email.label }}
+                                {{ u_form.email }}
+                                {% if u_form.email.errors %}
+                                <div class="alert alert-danger">
+                                    {{ u_form.email.errors }}
+                                </div>
+                                {% endif %}
+                            </div>
+                            <div class="form-group col-6">
+                                {{ c_form.phone.label }}
+                                {{ c_form.phone }}
+                                {% if c_form.phone.errors %}
+                                <div class="alert alert-danger">
+                                    {{ c_form.phone.errors }}
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-5">
+                                {{ p_form.passport.label }}
+                                {{ p_form.passport }}
+                            </div>
+                            <div class="form-group col-7">
+                                {{ p_form.starts_date.label }}
+                                <div class="form-inline">
+                                    {{ p_form.starts_date }}
+                                </div>
+                            </div>
+                            <div class="form-group col-7 offset-5">
+                                {{ p_form.expires_date.label }}
+                                <div class="form-inline">
+                                    {{ p_form.expires_date }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Выберите способ оплаты</label>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="cash">
+                                <label class="form-check-label">
+                                  наличными в офисе
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="online">
+                                <label class="form-check-label">
+                                  онлайн-оплата банковской картой
+                                </label>
+                            </div>
+                        </div>
+                    </fieldset>
+                    <div class="form-group">
+                        <div class="float-left">
+                            <button class='btn btn-primary' type="submit">Оформить</button>
+                        </div>
+                        <div class="float-right">
+                            <a class='btn btn-secondary' href="{% url 'cart' %}">Отмена</a>
+                        </div>
+                        
+                    </div>
+                </form>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-4">
+                <div class="d-flex justify-content-between">
+                    <div><h3>Ваш заказ</h3></div>
+                    <div>
+                        <div class="rounded-circle bg-primary pr-2 pl-2 text-white">{{ cart.items_count }}</div>
+                    </div>
+                </div>
+                <div class="">
+                    {% for item in cart.get_items %}
+                    <div class="border rounded p-2">
+                        <div class="d-flex align-items-center">
+                            {% if item.category == 'BUS TOUR' %}
+                            <div class="col-lg-8 col-md-8">
+                                <h5>{{ item.bustour.title }}</h5>
+                            </div>
+                            <div class="col-lg-4 col-md-4 text-right">{{ item.bustour.price }} руб.</div>
+                            {% else %}
+                            <div class="col-lg-8 col-md-8"><h5>Круиз {{ item.cruise.title }}</h5></div>
+                            <div class="col-lg-4 col-md-4 text-right">{{ item.cabin.price }} руб.</div>
+                            {% endif %}
+                        </div>
+                        <div class="d-flex">
+                            <div class="col-lg-8 col-md-8">
+                                <strong>Дата выезда: </strong>{{ item.date_booked.tour_date|date:'d.m.Y' }}
+                            </div>
+                        </div>
+                        <div class="d-flex align-items-center">
+                            {% if item.category == 'CRUISE' %}
+                            <div class="col-lg-8 col-md-8"><strong>Класс каюты: </strong>{{ item.cabin.category }}</div>
+                            {% endif %}
+                        </div>
+                        
+                        {% if item.services.count %}
+                            <div class="d-flex">
+                                <div class="col-lg-8 col-md-8">
+                                    <strong>Дополнительные услуги:</strong>
+                                </div>
+                            </div>
+                            {% for service in item.services.all %}
+                            <div class="d-flex">
+                                <div class="col-lg-8 pl-4">{{ forloop.counter }}. {{ service.name }}</div>
+                                <div class="col-lg-4 col-md-4 text-right">{{ service.price }} руб.</div>
+                            </div>        
+                           {% endfor %}
+                        {% endif %}
+                        <div class="d-flex mt-3 pt-2 border-top">
+                            <div class="col-lg-8 col-md-8">
+                                <h5>Сумма</h5>
+                            </div>
+                            <div class="col-lg-4 col-md-4 text-right"><h5>{{ item.subtotal }} руб.</h5></div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                <div class="bg-primary text-white border rounded pt-3 pb-3 pr-2 pl-2">
+                    <div class="d-flex">
+                        <div class="col-lg-8 col-md-8"><h4>К оплате</h4></div>
+                        <div class="col-lg-4 col-md-4 text-right">
+                            <h4>{{ cart.total }} руб.</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% else %}
+{% include 'mainapp/includes/permission_denied.html' %}
+{% endif %}
+{% endblock %}
